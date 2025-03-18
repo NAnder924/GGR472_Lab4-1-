@@ -26,11 +26,18 @@ Step 2: VIEW GEOJSON POINT DATA ON MAP
 //      Convert the response to JSON format and then store the response in your new variable
 
 let collisions;
+let neighborhoods;
 
 fetch('https://raw.githubusercontent.com/NAnder924/GGR472_Lab4-1-/refs/heads/main/data/pedcyc_collision_06-21.geojson')
     .then(response => response.json()
     .then(
         data => collisions = data
+    )
+)
+fetch('')
+.then(response => response.json()
+.then(
+    data => neighborhoods = data
     )
 )
 
@@ -106,7 +113,7 @@ map.on('load', (() => {
             'fill-opacity': [
                 'case',
                 ['==', ['get', 'COUNT'], 0], 0,
-                0.5
+                0.5  // Otherwise, opacity is 0.5
             ],
             'fill-outline-color': "black"
         }
