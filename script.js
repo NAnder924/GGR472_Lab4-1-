@@ -25,6 +25,14 @@ Step 2: VIEW GEOJSON POINT DATA ON MAP
 //      Use the fetch method to access the GeoJSON from your online repository
 //      Convert the response to JSON format and then store the response in your new variable
 
+let collisions;
+
+fetch('https://raw.githubusercontent.com/NAnder924/GGR472_Lab4-1-/refs/heads/main/data/pedcyc_collision_06-21.geojson')
+    .then(response => response.json()
+    .then(
+        data => collisions = data
+    )
+)
 
 
 /*--------------------------------------------------------------------
@@ -37,6 +45,54 @@ Step 2: VIEW GEOJSON POINT DATA ON MAP
 //      **Option: You may want to consider how to increase the size of your bbox to enable greater geog coverage of your hexgrid
 //                Consider return types from different turf functions and required argument types carefully here
 
+
+map.on('load', (() => {
+
+    const bbox = turf.bbox(collisions)
+    const transformed = turf.transformScale(turf.polygon([[
+        [bbox[0], bbox[1]],
+        [bbox[1], bbox[2]],
+        [bbox[2], bbox[3]],
+        [bbox[3], bbox[0]],
+        [bbox[0], bbox[1]]
+    ]]), 1.1)
+    const transformedBbox = turf.bbox(transformed)
+    const hexGrid = turf.hexGrid(transformedBbox, 0.5)
+
+    map.addSource('pedcyc_collision', {
+        type: 'geojson',
+        data: collisions
+    });
+    map.addLayer({
+            id: 'pedcyc_collision', 
+            type: 'circle', //type of marker
+            source: 'pedcyc_collision', //using the source for community gardens and foodtrees added above
+            paint: {
+                'circle-radius': 3, //circle radius size
+                'circle-color': 'blue', //colour of circle
+                'circle-stroke-width': 1, //border of circle width
+                'circle-stroke-color': 'rgb(41, 14, 159)' //border of circle colour
+            }
+        }
+    )
+
+    map.addSource('hexGrid', {
+        type: 'geojson',
+        data: hexGrid
+    })
+
+    map.addLayer({
+        id: 'hexGrid',
+        type: "fill",
+        source: "hexGrid",
+        paint: {
+            'fill-color': "red",
+            'fill-opacity': 0.5,
+            'fill-outline-color': "black"
+        }
+    })
+
+}))
 
 
 /*--------------------------------------------------------------------
