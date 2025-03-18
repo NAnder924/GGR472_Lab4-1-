@@ -60,34 +60,18 @@ map.on('load', (() => {
         data: collisions
     });
 
-    map.addLayer({
-            id: 'pedcyc_collision', 
-            type: 'circle', //type of marker
-            source: 'pedcyc_collision', //using the source for community gardens and foodtrees added above
-            paint: {
-                'circle-radius': 3, //circle radius size
-                'circle-color': 'blue', //colour of circle
-                'circle-stroke-width': 1, //border of circle width
-                'circle-stroke-color': 'rgb(41, 14, 159)' //border of circle colour
-            }
-        }
-    )
-
-    map.addSource('hexGrid', {
-        type: 'geojson',
-        data: hexGrid
-    })
-
-    map.addLayer({
-        id: 'hexGrid',
-        type: "fill",
-        source: "hexGrid",
-        paint: {
-            'fill-color': "red",
-            'fill-opacity': 0.5,
-            'fill-outline-color': "black"
-        }
-    })
+    // map.addLayer({
+    //         id: 'pedcyc_collision', 
+    //         type: 'circle', //type of marker
+    //         source: 'pedcyc_collision', //using the source for community gardens and foodtrees added above
+    //         paint: {
+    //             'circle-radius': 3, //circle radius size
+    //             'circle-color': 'blue', //colour of circle
+    //             'circle-stroke-width': 1, //border of circle width
+    //             'circle-stroke-color': 'rgb(41, 14, 159)' //border of circle colour
+    //         }
+    //     }
+    // )
 
     let collishex = turf.collect(hexGrid, collisions, '_id', 'collisions_id');
 
@@ -96,8 +80,35 @@ map.on('load', (() => {
     collishex.features.forEach((feature) => {
         feature.properties.COUNT = feature.properties.collisions_id.length
         if (feature.properties.COUNT > maxcollis) {
-            //console.log(feature);
             maxcollis = feature.properties.COUNT
+        }
+    });
+    
+    map.addSource('hexGrid', {
+        type: 'geojson',
+        data: collishex
+    })
+
+    map.addLayer({
+        id: 'hexGrid',
+        type: "fill",
+        source: "hexGrid",
+        paint: {
+            'fill-color': [
+                'step',
+                ['get', 'COUNT'],
+                '#fff5f0', // 0 collisions 
+                1, '#fee0d2', // 1 collision 
+                3, '#fcbba1', // 3 collisions 
+                5, '#fc9272', // 5 collisions 
+                10, '#fb6a4a', // 10 collisions
+                20, '#ef3b2c', // 20+ collisions
+                30, '#cb181d', // 30+ collisions 
+                40, '#a50f15', // 40+ collisions 
+                50, '#67000d' // 50+ collisions 
+            ],
+            'fill-opacity': 0.6,
+            'fill-outline-color': "black"
         }
     });
 }))
