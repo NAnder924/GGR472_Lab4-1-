@@ -12,10 +12,10 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiYW5kZXI5MjQiLCJhIjoiY201b2RweHNhMGxjazJscTI0c
 const map = new mapboxgl.Map({
     container: 'map', // container id in HTML
     style: 'mapbox://styles/mapbox/streets-v12',  // ****ADD MAP STYLE HERE *****
-    center: [-79.39, 43.65],  // starting point, longitude/latitude
-    zoom: 11 // starting zoom level
+    center: [-79.3, 43.72],  // starting point, longitude/latitude
+    zoom: 10.2 // starting zoom level
 });
-
+//coordinates of city of toronto boundaries
 coordinates = [
     [
       [
@@ -535,13 +535,14 @@ Step 2: VIEW GEOJSON POINT DATA ON MAP
 
 let collisions;
 let neighborhoods;
-
+//fetching collision data
 fetch('https://raw.githubusercontent.com/NAnder924/GGR472_Lab4-1-/refs/heads/main/data/pedcyc_collision_06-21.geojson')
     .then(response => response.json()
     .then(
         data => collisions = data
     )
 )
+//fetching boundaries of toronto
 fetch("https://raw.githubusercontent.com/NAnder924/GGR472_Lab4-1-/refs/heads/main/data/waterboundaries.geojson")
     .then(response => response.json()
     .then(
@@ -558,14 +559,14 @@ fetch("https://raw.githubusercontent.com/NAnder924/GGR472_Lab4-1-/refs/heads/mai
 //      Use bounding box coordinates as argument in the turf hexgrid function
 //      **Option: You may want to consider how to increase the size of your bbox to enable greater geog coverage of your hexgrid
 //                Consider return types from different turf functions and required argument types carefully here
-
+//create map
 map.on('load', (() => {
 
     const bbox = turf.bbox(collisions)
     const transformed = turf.bboxPolygon(bbox);
     const expanded = turf.transformScale(transformed, 1.1);
-    const transformedBbox = turf.bbox(expanded);    
-    const hexGrid = turf.hexGrid(transformedBbox, 0.6)
+    const transformedBbox = turf.bbox(expanded); 
+    const hexGrid = turf.hexGrid(transformedBbox, 0.6) //size of hexagons
 
     let cleanHexGrid = []
 
@@ -615,7 +616,7 @@ map.on('load', (() => {
         type: 'geojson',
         data: collishex
     })
-
+    
     map.addLayer({
         id: 'hexGrid',
         type: "fill",

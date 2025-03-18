@@ -19,6 +19,36 @@ header {
     transition: background-color 0.3s, border-color 0.3s;
 }
 
+.legend {
+    position: absolute;
+    bottom: 60px;
+    right: 60px;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 10px;
+    border-radius: 5px;
+    font-family: Arial, sans-serif;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.legend h4 {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.legend div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.legend span {
+    width: 50px;
+    height: 30px;
+    display: inline-block;
+    margin-right: 10px;
+    border-radius: 3px;
+}
+
 .map {
     position: absolute;
     top: 56px; 
