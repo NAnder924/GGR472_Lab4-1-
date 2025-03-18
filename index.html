@@ -13,14 +13,46 @@
     <link rel="stylesheet" href="style.css">
     <!-- Turf.js -->
     <script src='https://unpkg.com/@turf/turf@7.2.0/turf.min.js'></script>
+    <!-- bootstrap -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
 
+    <div>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <h1 class="header">Bike to Pedestrian Collisions in the City of Toronto</h1>
+        
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle custom-btn" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Resources
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="https://www.blogto.com/toronto/the_best_bike_stores_in_toronto/" target="_blank">Best Repair Shops</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="https://www.toronto.ca/home/311-toronto-at-your-service/find-service-information/article/?kb=kA06g000001cvj8CAA" target="_blank">Toronto Hospitals</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <button type="button" class="nav-link custom-btn" data-toggle="button" aria-pressed="false" autocomplete="off">
+                Single toggle
+            </button>
+        </nav>
+    </div>
+    
+
     <!-- MAP CONTAINER -->
     <div id='map' class='map'></div>
 
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
     <script src="script.js"></script>
+    
 
 </body>
 
