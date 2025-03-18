@@ -45,15 +45,13 @@ fetch('https://raw.githubusercontent.com/NAnder924/GGR472_Lab4-1-/refs/heads/mai
 //      **Option: You may want to consider how to increase the size of your bbox to enable greater geog coverage of your hexgrid
 //                Consider return types from different turf functions and required argument types carefully here
 
-// The code will go inside the map load event handler below the code written in Steps 2 and 3.
-
 map.on('load', (() => {
 
     const bbox = turf.bbox(collisions)
     const transformed = turf.bboxPolygon(bbox);
     const expanded = turf.transformScale(transformed, 1.1);
     const transformedBbox = turf.bbox(expanded);    
-    const hexGrid = turf.hexGrid(transformedBbox, 0.5)
+    const hexGrid = turf.hexGrid(transformedBbox, 0.6)
 
     map.addSource('pedcyc_collision', {
         type: 'geojson',
@@ -97,17 +95,19 @@ map.on('load', (() => {
             'fill-color': [
                 'step',
                 ['get', 'COUNT'],
-                '#fff5f0', // 0 collisions 
-                1, '#fee0d2', // 1 collision 
-                3, '#fcbba1', // 3 collisions 
-                5, '#fc9272', // 5 collisions 
-                10, '#fb6a4a', // 10 collisions
-                20, '#ef3b2c', // 20+ collisions
-                30, '#cb181d', // 30+ collisions 
-                40, '#a50f15', // 40+ collisions 
-                50, '#67000d' // 50+ collisions 
+                '#ffffff', // 0 collisions 
+                1, '#fee5d9', // 1-2 collision 
+                3, '#fcbba1', // 3-5 collisions 
+                6, '#fc9272', // 6-10 collisions 
+                11, '#fb6a4a', // 11-20 collisions
+                21, '#de2d26', // 20-40 collisions
+                40, '#a50f15', // 40+ collisions
             ],
-            'fill-opacity': 0.6,
+            'fill-opacity': [
+                'case',
+                ['==', ['get', 'COUNT'], 0], 0,
+                0.5
+            ],
             'fill-outline-color': "black"
         }
     });
