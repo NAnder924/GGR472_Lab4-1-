@@ -45,6 +45,7 @@ fetch('https://raw.githubusercontent.com/NAnder924/GGR472_Lab4-1-/refs/heads/mai
 //      **Option: You may want to consider how to increase the size of your bbox to enable greater geog coverage of your hexgrid
 //                Consider return types from different turf functions and required argument types carefully here
 
+// The code will go inside the map load event handler below the code written in Steps 2 and 3.
 
 map.on('load', (() => {
 
@@ -58,6 +59,7 @@ map.on('load', (() => {
         type: 'geojson',
         data: collisions
     });
+
     map.addLayer({
             id: 'pedcyc_collision', 
             type: 'circle', //type of marker
@@ -87,8 +89,18 @@ map.on('load', (() => {
         }
     })
 
-}))
+    let collishex = turf.collect(hexGrid, collisions, '_id', 'collisions_id');
 
+    let maxcollis = 0;
+
+    collishex.features.forEach((feature) => {
+        feature.properties.COUNT = feature.properties.collisions_id.length
+        if (feature.properties.COUNT > maxcollis) {
+            //console.log(feature);
+            maxcollis = feature.properties.COUNT
+        }
+    });
+}))
 
 /*--------------------------------------------------------------------
 Step 4: AGGREGATE COLLISIONS BY HEXGRID
