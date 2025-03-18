@@ -49,14 +49,9 @@ fetch('https://raw.githubusercontent.com/NAnder924/GGR472_Lab4-1-/refs/heads/mai
 map.on('load', (() => {
 
     const bbox = turf.bbox(collisions)
-    const transformed = turf.transformScale(turf.polygon([[
-        [bbox[0], bbox[1]],
-        [bbox[1], bbox[2]],
-        [bbox[2], bbox[3]],
-        [bbox[3], bbox[0]],
-        [bbox[0], bbox[1]]
-    ]]), 1.1)
-    const transformedBbox = turf.bbox(transformed)
+    const transformed = turf.bboxPolygon(bbox);
+    const expanded = turf.transformScale(transformed, 1.1);
+    const transformedBbox = turf.bbox(expanded);    
     const hexGrid = turf.hexGrid(transformedBbox, 0.5)
 
     map.addSource('pedcyc_collision', {
