@@ -35,12 +35,11 @@ fetch('https://raw.githubusercontent.com/NAnder924/GGR472_Lab4-1-/refs/heads/mai
     )
 )
 fetch("https://raw.githubusercontent.com/NAnder924/GGR472_Lab4-1-/refs/heads/main/data/Neighbourhoods_4326.geojson")
-.then(response => response.json()
-.then(
-    data => neighborhoods = data
+    .then(response => response.json()
+    .then(
+        data => neighborhoods = data
     )
 )
-
 
 /*--------------------------------------------------------------------
     Step 3: CREATE BOUNDING BOX AND HEXGRID
@@ -59,6 +58,24 @@ map.on('load', (() => {
     const expanded = turf.transformScale(transformed, 1.1);
     const transformedBbox = turf.bbox(expanded);    
     const hexGrid = turf.hexGrid(transformedBbox, 0.6)
+
+    let neighborhoodPolygons = []
+    neighborhoods.features.forEach((i) => {
+        neighborhoodPolygons.push(turf.multiPolygon(i.geometry.coordinates))
+    })
+
+    let cleanHexGrid = []
+
+    hexGrid.features.forEach((i) => {
+        for (let j of neighborhoodPolygons) {
+            if (turf.booleanOverlap(i, j)) {
+                cleanHexGrid.push(i);
+                return; 
+            }
+        }
+    });
+
+    console.log(cleanHexGrid)
 
     map.addSource('pedcyc_collision', {
         type: 'geojson',
@@ -88,6 +105,8 @@ map.on('load', (() => {
             maxcollis = feature.properties.COUNT
         }
     });
+
+    
     
     map.addSource('hexGrid', {
         type: 'geojson',
@@ -118,6 +137,8 @@ map.on('load', (() => {
             'fill-outline-color': "black"
         }
     });
+
+
 }))
 
 /*--------------------------------------------------------------------
