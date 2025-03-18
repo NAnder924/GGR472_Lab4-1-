@@ -34,7 +34,7 @@ fetch('https://raw.githubusercontent.com/NAnder924/GGR472_Lab4-1-/refs/heads/mai
         data => collisions = data
     )
 )
-fetch('')
+fetch("https://raw.githubusercontent.com/NAnder924/GGR472_Lab4-1-/refs/heads/main/data/Neighbourhoods_4326.geojson")
 .then(response => response.json()
 .then(
     data => neighborhoods = data
