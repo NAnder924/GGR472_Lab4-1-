@@ -1,10 +1,15 @@
 /* navigation bar details */
 .navbar {
     z-index: 1000; 
-    position: relative;
+    display: block !important;
+}
+
+.button-container {
+    margin-left: 2rem;
+    width: 200px;
     display: flex;
-    justify-content: space-between; 
-    height: 90px;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 /* Header of navigation bar details */
@@ -23,6 +28,13 @@
     transition: background-color 0.3s, border-color 0.3s;
 }
 
+
+.custom-btn:hover {
+    background-color: #67000d !important; /* Change this */
+    color: white !important;
+    border-color: #67000d !important;
+}
+
 /* legend button details */
 .btn.btn-primary {
     background-color: #fc9272;
@@ -39,8 +51,6 @@
     border-radius: 4px;
     border: 1px solid #67000d;
     transition: background-color 0.3s, border-color 0.3s;
-    padding-left: 2px;
-    padding-right: 2px;
 }
 
 .dropdown-menu {
@@ -65,13 +75,11 @@
 
 /* legend details */
 .legend {
-    position: absolute;
     bottom: 60px;
     right: 60px;
     background: rgba(255, 255, 255, 0.8);
     padding: 10px;
     border-radius: 5px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
     z-index: 100;
 }
 
@@ -103,4 +111,3 @@
     right: 0;
     width: 100%;
 }
-

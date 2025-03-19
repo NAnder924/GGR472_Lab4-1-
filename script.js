@@ -534,7 +534,6 @@ Step 2: VIEW GEOJSON POINT DATA ON MAP
 //      Convert the response to JSON format and then store the response in your new variable
 
 let collisions;
-let neighborhoods;
 //fetching collision data
 fetch('https://raw.githubusercontent.com/NAnder924/GGR472_Lab4-1-/refs/heads/main/data/pedcyc_collision_06-21.geojson')
     .then(response => response.json()
@@ -542,14 +541,6 @@ fetch('https://raw.githubusercontent.com/NAnder924/GGR472_Lab4-1-/refs/heads/mai
         data => collisions = data
     )
 )
-//fetching boundaries of toronto
-fetch("https://raw.githubusercontent.com/NAnder924/GGR472_Lab4-1-/refs/heads/main/data/waterboundaries.geojson")
-    .then(response => response.json()
-    .then(
-        data => neighborhoods = data
-    )
-)
-
 /*--------------------------------------------------------------------
     Step 3: CREATE BOUNDING BOX AND HEXGRID
 --------------------------------------------------------------------*/
