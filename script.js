@@ -609,8 +609,6 @@ map.on('load', (() => {
             maxcollis = feature.properties.COUNT
         }
     });
-
-    
     
     map.addSource('hexGrid', {
         type: 'geojson',
@@ -636,9 +634,7 @@ map.on('load', (() => {
             'fill-opacity': 0.5,
             'fill-outline-color': "black"
         }
-    });
-
-
+    }); 
 }))
 
 /*--------------------------------------------------------------------
@@ -647,7 +643,8 @@ Step 4: AGGREGATE COLLISIONS BY HEXGRID
 //HINT: Use Turf collect function to collect all '_id' properties from the collision points data for each heaxagon
 //      View the collect output in the console. Where there are no intersecting points in polygons, arrays will be empty
 
-
+{/* <button type="button" class="btn-close" aria-label="Close"></button>
+x button for legend */}
 
 // /*--------------------------------------------------------------------
 // Step 5: FINALIZE YOUR WEB MAP

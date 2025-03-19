@@ -1,22 +1,55 @@
 .navbar {
     z-index: 1000; 
-    position: relative; 
+    position: relative;
+    display: flex;
+    justify-content: space-between; 
+    height: 90px;
 }
 
-header {
+.h1 {
     font-size: 12px;
     font-weight: bold;
-    margin: 5px;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    margin-left: 2rem;
+    margin-right: 17rem;
 }
 
 .custom-btn {
-    background-color: #fc9272; /* Matching the blue color for both */
+    background-color: #fc9272; 
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.btn.btn-primary {
+    background-color: #fc9272;
     color: #00000080;
-    padding: 5px 10px;
-    font-size: 16px;
+    padding: 8px 12px;
     border-radius: 4px;
     border: 1px solid #67000d;
     transition: background-color 0.3s, border-color 0.3s;
+    position: right;
+}
+
+.nav-item.dropdown {
+    background-color: #fc9272; /* Matching the blue color for both */
+    border-radius: 4px;
+    border: 1px solid #67000d;
+    transition: background-color 0.3s, border-color 0.3s;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+.dropdown-menu {
+    --bs-dropdown-link-active-bg: #67000d !important;
+}
+
+.nav-link {
+    color: #00000080 !important;
+}
+
+.btn-primary {
+    --bs-btn-hover-bg: #67000d !important;
+    --bs-btn-hover-border-color: #67000d !important;
 }
 
 .legend {
@@ -26,8 +59,8 @@ header {
     background: rgba(255, 255, 255, 0.8);
     padding: 10px;
     border-radius: 5px;
-    font-family: Arial, sans-serif;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    z-index: 100;
 }
 
 .legend h4 {
