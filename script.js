@@ -639,11 +639,11 @@ map.on('load', (() => {
             ],
             'fill-opacity': [
                 'case',
-                ['boolean', ['feature-state', 'hover'], false], //if mouse hovering opacity of hexagon 0.9, if not, opacity stays at 0.5
+                ['boolean', ['feature-state', 'hover'], false], //if mouse hovering opacity of hexagon 0.9, if not, opacity stays at 0.6
                 0.9,
                 0.5,
             ],
-            'fill-outline-color': "black" //outline of hexagons is black
+            'fill-outline-color': "black" //outline of hexagons in black
         }
     }); 
 

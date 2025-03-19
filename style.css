@@ -1,3 +1,4 @@
+/* navigation bar details */
 .navbar {
     z-index: 1000; 
     position: relative;
@@ -6,6 +7,7 @@
     height: 90px;
 }
 
+/* Header of navigation bar details */
 .h1 {
     font-size: 12px;
     font-weight: bold;
@@ -15,11 +17,13 @@
     margin-right: 17rem;
 }
 
+/* button details */
 .custom-btn {
     background-color: #fc9272; 
     transition: background-color 0.3s, border-color 0.3s;
 }
 
+/* legend button details */
 .btn.btn-primary {
     background-color: #fc9272;
     color: #00000080;
@@ -29,6 +33,7 @@
     position: right;
 }
 
+/* dropdown menu details */
 .nav-item.dropdown {
     background-color: #fc9272; /* Matching the blue color for both */
     border-radius: 4px;
@@ -42,6 +47,7 @@
     --bs-dropdown-link-active-bg: #67000d !important;
 }
 
+/* resource button details */
 .nav-link {
     color: #00000080 !important;
 }
@@ -52,10 +58,12 @@
     --bs-btn-border-color: #67000d !important;
 }
 
+/* off canvas details */
 .offcanvas {
     z-index: 1000;
 }
 
+/* legend details */
 .legend {
     position: absolute;
     bottom: 60px;
@@ -86,6 +94,7 @@
     border-radius: 3px;
 }
 
+/* map details */
 .map {
     position: absolute;
     top: 56px; 
