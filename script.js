@@ -563,29 +563,31 @@ fetch("https://raw.githubusercontent.com/NAnder924/GGR472_Lab4-1-/refs/heads/mai
 map.on('load', (() => {
 
     const bbox = turf.bbox(collisions)
-    const transformed = turf.bboxPolygon(bbox);
-    const expanded = turf.transformScale(transformed, 1.1);
+    const transformed = turf.bboxPolygon(bbox); //create bounding box
+    const expanded = turf.transformScale(transformed, 1.1); //make sure bounding box to include all collisions
     const transformedBbox = turf.bbox(expanded); 
-    const hexGrid = turf.hexGrid(transformedBbox, 0.6) //size of hexagons
+    const hexGrid = turf.hexGrid(transformedBbox, 0.7) //size of hexagons
 
+    //hexagons that are within the City of Toronto will be stored in cleanHexGrid
     let cleanHexGrid = []
 
+    //coordinates represents the area of interest (City of Toronto)
     const polygon = turf.polygon(coordinates)
 
+    //filter hexagons to only keep the hexagons that fall within or overlap with the area of interest 
     hexGrid.features.forEach((i) => {
         if (turf.booleanWithin(i, polygon) || turf.booleanOverlap(i, polygon)) {
             cleanHexGrid.push(i);
         }
     });
 
-    console.log(cleanHexGrid)
-    console.log(hexGrid)
-
+//adding cycling collision data
     map.addSource('pedcyc_collision', {
         type: 'geojson',
         data: collisions
     });
 
+    //old collision point data
     // map.addLayer({
     //         id: 'pedcyc_collision', 
     //         type: 'circle', //type of marker
@@ -601,20 +603,24 @@ map.on('load', (() => {
 
     let collishex = turf.collect(turf.featureCollection(cleanHexGrid), collisions, '_id', 'collisions_id');
 
-    let maxcollis = 0;
+    collishex.features.forEach((feature, index) => {
+        feature.id = index; 
+    });
 
+    let maxcollis = 0;
+//counting the maximum collisions fo reach hexagon
     collishex.features.forEach((feature) => {
         feature.properties.COUNT = feature.properties.collisions_id.length
         if (feature.properties.COUNT > maxcollis) {
             maxcollis = feature.properties.COUNT
         }
     });
-    
+//adding collishex data for the hexgrid
     map.addSource('hexGrid', {
         type: 'geojson',
         data: collishex
     })
-    
+    //adding the hexgrid to the map and creating the data ranges
     map.addLayer({
         id: 'hexGrid',
         type: "fill",
@@ -631,10 +637,44 @@ map.on('load', (() => {
                 21, '#de2d26', // 20-40 collisions
                 40, '#a50f15', // 40+ collisions
             ],
-            'fill-opacity': 0.5,
-            'fill-outline-color': "black"
+            'fill-opacity': [
+                'case',
+                ['boolean', ['feature-state', 'hover'], false], //if mouse hovering opacity of hexagon 0.9, if not, opacity stays at 0.5
+                0.9,
+                0.5,
+            ],
+            'fill-outline-color': "black" //outline of hexagons is black
         }
     }); 
+
+    let hoveredHexId = null;
+//if hovering over a hexagon, true, if not hovering over hexagon, false (will effect the opacity as stated above)
+    map.on('mousemove', 'hexGrid', (e) => {
+        if (e.features.length > 0) {
+            if (hoveredHexId !== null) {
+                map.setFeatureState(
+                    { source: 'hexGrid', id: hoveredHexId },
+                    { hover: false }
+                );
+            }
+            hoveredHexId = e.features[0].id;
+            map.setFeatureState(
+                { source: 'hexGrid', id: hoveredHexId },
+                { hover: true }
+            );
+        }
+    });
+//when mouse leavs hexagon, the hover effect will go away
+    map.on('mouseleave', 'hexGrid', () => {
+        if (hoveredHexId !== null) {
+            map.setFeatureState(
+                { source: 'hexGrid', id: hoveredHexId },
+                { hover: false }
+            );
+        }
+        hoveredHexId = null;
+    });
+
 }))
 
 /*--------------------------------------------------------------------
@@ -643,8 +683,8 @@ Step 4: AGGREGATE COLLISIONS BY HEXGRID
 //HINT: Use Turf collect function to collect all '_id' properties from the collision points data for each heaxagon
 //      View the collect output in the console. Where there are no intersecting points in polygons, arrays will be empty
 
-{/* <button type="button" class="btn-close" aria-label="Close"></button>
-x button for legend */}
+/* <button type="button" class="btn-close" aria-label="Close"></button>
+x button for legend */
 
 // /*--------------------------------------------------------------------
 // Step 5: FINALIZE YOUR WEB MAP
