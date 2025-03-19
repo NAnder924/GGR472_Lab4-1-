@@ -2,9 +2,6 @@
 GGR472 LAB 4: Incorporating GIS Analysis into web maps using Turf.js 
 --------------------------------------------------------------------*/
 
-/*--------------------------------------------------------------------
-Step 1: INITIALIZE MAP
---------------------------------------------------------------------*/
 // Define access token
 mapboxgl.accessToken = 'pk.eyJ1IjoiYW5kZXI5MjQiLCJhIjoiY201b2RweHNhMGxjazJscTI0cm92MDNuOCJ9.DUSIWV2_-BR0a9LOqhn15w'; //****ADD YOUR PUBLIC ACCESS TOKEN*****
 
@@ -525,14 +522,6 @@ coordinates = [
     ]
   ]
 
-
-/*--------------------------------------------------------------------
-Step 2: VIEW GEOJSON POINT DATA ON MAP
---------------------------------------------------------------------*/
-//HINT: Create an empty variable
-//      Use the fetch method to access the GeoJSON from your online repository
-//      Convert the response to JSON format and then store the response in your new variable
-
 let collisions;
 //fetching collision data
 fetch('https://raw.githubusercontent.com/NAnder924/GGR472_Lab4-1-/refs/heads/main/data/pedcyc_collision_06-21.geojson')
@@ -541,15 +530,7 @@ fetch('https://raw.githubusercontent.com/NAnder924/GGR472_Lab4-1-/refs/heads/mai
         data => collisions = data
     )
 )
-/*--------------------------------------------------------------------
-    Step 3: CREATE BOUNDING BOX AND HEXGRID
---------------------------------------------------------------------*/
-//HINT: All code to create and view the hexgrid will go inside a map load event handler
-//      First create a bounding box around the collision point data
-//      Access and store the bounding box coordinates as an array variable
-//      Use bounding box coordinates as argument in the turf hexgrid function
-//      **Option: You may want to consider how to increase the size of your bbox to enable greater geog coverage of your hexgrid
-//                Consider return types from different turf functions and required argument types carefully here
+
 //create map
 map.on('load', (() => {
 
@@ -577,20 +558,6 @@ map.on('load', (() => {
         type: 'geojson',
         data: collisions
     });
-
-    //old collision point data
-    // map.addLayer({
-    //         id: 'pedcyc_collision', 
-    //         type: 'circle', //type of marker
-    //         source: 'pedcyc_collision', //using the source for community gardens and foodtrees added above
-    //         paint: {
-    //             'circle-radius': 3, //circle radius size
-    //             'circle-color': 'blue', //colour of circle
-    //             'circle-stroke-width': 1, //border of circle width
-    //             'circle-stroke-color': 'rgb(41, 14, 159)' //border of circle colour
-    //         }
-    //     }
-    // )
 
     let collishex = turf.collect(turf.featureCollection(cleanHexGrid), collisions, '_id', 'collisions_id');
 
@@ -640,6 +607,8 @@ map.on('load', (() => {
 
     let hoveredHexId = null;
 //if hovering over a hexagon, true, if not hovering over hexagon, false (will effect the opacity as stated above)
+
+    const hoverInfo = document.getElementById('hover-info');
     map.on('mousemove', 'hexGrid', (e) => {
         if (e.features.length > 0) {
             if (hoveredHexId !== null) {
@@ -653,6 +622,13 @@ map.on('load', (() => {
                 { source: 'hexGrid', id: hoveredHexId },
                 { hover: true }
             );
+
+            hoverInfo.style.display = 'block';
+            hoverInfo.style.left = e.originalEvent.pageX + 10 + 'px';
+            hoverInfo.style.top = e.originalEvent.pageY + 10 + 'px';
+
+            // Update the div content (modify based on your data properties)
+            hoverInfo.innerHTML = `<strong>Collisions:</strong> ${e.features[0].properties.COUNT}`;
         }
     });
 //when mouse leavs hexagon, the hover effect will go away
@@ -664,26 +640,7 @@ map.on('load', (() => {
             );
         }
         hoveredHexId = null;
+        hoverInfo.style.display = 'none';
     });
 
 }))
-
-/*--------------------------------------------------------------------
-Step 4: AGGREGATE COLLISIONS BY HEXGRID
---------------------------------------------------------------------*/
-//HINT: Use Turf collect function to collect all '_id' properties from the collision points data for each heaxagon
-//      View the collect output in the console. Where there are no intersecting points in polygons, arrays will be empty
-
-/* <button type="button" class="btn-close" aria-label="Close"></button>
-x button for legend */
-
-// /*--------------------------------------------------------------------
-// Step 5: FINALIZE YOUR WEB MAP
-// --------------------------------------------------------------------*/
-//HINT: Think about the display of your data and usability of your web map.
-//      Update the addlayer paint properties for your hexgrid using:
-//        - an expression
-//        - The COUNT attribute
-//        - The maximum number of collisions found in a hexagon
-//      Add a legend and additional functionality including pop-up windows
-
